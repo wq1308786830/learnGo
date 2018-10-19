@@ -1,3 +1,6 @@
+/*
+官网教程
+*/
 package main
 
 import (
@@ -6,5 +9,8 @@ import (
 )
 
 func main() {
-	fmt.Print(stringutil.Reverse("Hello, World!\n"))
+	for i := 0; i < 5; i++ {
+		defer fmt.Printf("\n%d ", i)
+		fmt.Print(stringutil.Reverse("Hello, World!\n"))
+	}
 }

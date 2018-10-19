@@ -1,3 +1,6 @@
+/*
+官网教程
+*/
 package stringutil
 
 import "testing"
