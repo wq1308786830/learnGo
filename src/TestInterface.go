@@ -9,8 +9,8 @@ import (
 
 type Counter int
 
-var addr = flag.String("addr", ":5757", "http service address")
 var counter = new(Counter)
+var addr = flag.String("addr", ":5757", "http service address")
 
 // 简单的计数器服务。
 func (counter *Counter) PrintCount(w http.ResponseWriter) {
