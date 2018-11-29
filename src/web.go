@@ -11,14 +11,14 @@ import (
 	"net/http"
 )
 
-var addr = flag.String("addr", ":1718", "http service address") // Q=17, R=18
+var qraddr = flag.String("addr", ":1718", "http service address") // Q=17, R=18
 
 var templ = template.Must(template.New("qr").Parse(templateStr))
 
 func main() {
 	flag.Parse()
 	http.Handle("/", http.HandlerFunc(QR))
-	err := http.ListenAndServe(*addr, nil)
+	err := http.ListenAndServe(*qraddr, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe:", err)
 	}
@@ -29,7 +29,7 @@ func QR(w http.ResponseWriter, req *http.Request) {
 }
 
 func ServeHandler() {
-	fmt.Print("Server start at localhost:", *addr)
+	fmt.Print("Server start at localhost:", *qraddr)
 }
 
 const templateStr = `
