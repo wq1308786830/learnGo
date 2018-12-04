@@ -5,7 +5,7 @@ package main
 
 import (
 	"fmt"
-	"russell/stringutil"
+	"src/russell/stringutil"
 )
 
 func main() {

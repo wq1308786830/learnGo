@@ -6,7 +6,7 @@
 
 输入: [1,2,3,1]
 输出: true
- */
+*/
 package main
 
 func containsDuplicate(nums []int) bool {
