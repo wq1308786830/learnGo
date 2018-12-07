@@ -1,4 +1,4 @@
-package sql_test
+package config
 
 import (
 	"gopkg.in/yaml.v2"

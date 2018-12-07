@@ -1,25 +1,27 @@
-package sql_test
+package models
 
 import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"
-	"russell/sql-test/models"
+	"russell/sql-test/config"
 )
 
-var DB *gorm.DB
 var dbConfString string
 
+/**
+ * @param dbType 设置的数据库类型
+ */
 func ConnDB(dbType string) (*gorm.DB, error) {
 
-	LoadConfiguration("src/russell/sql-test/env.yaml")
+	config.LoadConfiguration("src/russell/sql-test/config/env.yaml")
 
-	var dbConf = GetConfiguration()
-	var currDBConf models.DBConf
+	var dbConf = config.GetConfiguration()
+	var currDBConf DBConf
 
 	SetDBConnectInfo(dbType, &currDBConf, *dbConf)
 
-	// "user:password@/dbname?charset=utf8&parseTime=True&loc=Local"
+	// "user:password@(host:port)/dbname?charset=utf8&parseTime=True&loc=Local"
 	db, err := gorm.Open("mysql", dbConfString)
 	if err != nil {
 		log.Fatalln(err)
@@ -29,7 +31,10 @@ func ConnDB(dbType string) (*gorm.DB, error) {
 	return db, err
 }
 
-func SetDBConnectInfo(dbType string, currDBConf *models.DBConf, dbConf Configuration) {
+/**
+ * 根据dbType类型设置数据库链接配置
+ */
+func SetDBConnectInfo(dbType string, currDBConf *DBConf, dbConf config.Configuration) {
 	switch dbType {
 	case "core":
 		SetCoreDBInfo(currDBConf, dbConf)
@@ -42,7 +47,10 @@ func SetDBConnectInfo(dbType string, currDBConf *models.DBConf, dbConf Configura
 	dbConfString = currDBConf.User + ":" + currDBConf.Pass + "@(" + currDBConf.Host + ":" + currDBConf.Port + ")/" + currDBConf.Name + "?charset=utf8&parseTime=True&loc=Local"
 }
 
-func SetCoreDBInfo(currDBConf *models.DBConf, dbConf Configuration) {
+/**
+ * 设置为core数据库的连接配置
+ */
+func SetCoreDBInfo(currDBConf *DBConf, dbConf config.Configuration) {
 	currDBConf.Host = dbConf.CORE_DB_HOST
 	currDBConf.Port = dbConf.CORE_DB_PORT
 	currDBConf.Name = dbConf.CORE_DB_NAME
@@ -50,7 +58,10 @@ func SetCoreDBInfo(currDBConf *models.DBConf, dbConf Configuration) {
 	currDBConf.Pass = dbConf.CORE_DB_PASSWORD
 }
 
-func SetSKUDBInfo(currDBConf *models.DBConf, dbConf Configuration) {
+/**
+ * 设置为sku数据库的连接配置
+ */
+func SetSKUDBInfo(currDBConf *DBConf, dbConf config.Configuration) {
 	currDBConf.Host = dbConf.SKU_DB_HOST
 	currDBConf.Port = dbConf.SKU_DB_PORT
 	currDBConf.Name = dbConf.SKU_DB_NAME
