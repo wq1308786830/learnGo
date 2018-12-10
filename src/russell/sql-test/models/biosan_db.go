@@ -4,6 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"
+	"os"
 	"russell/sql-test/config"
 )
 
@@ -14,7 +15,12 @@ var dbConfString string
  */
 func ConnDB(dbType string) (*gorm.DB, error) {
 
-	config.LoadConfiguration("src/russell/sql-test/config/env.yaml")
+	confPath := "src/russell/sql-test/config/env.yaml"
+	if len(os.Args) == 5 && os.Args[4] == "test" {
+		confPath = "../config/env.yaml"
+	}
+
+	config.LoadConfiguration(confPath)
 
 	var dbConf = config.GetConfiguration()
 	var currDBConf DBConf
