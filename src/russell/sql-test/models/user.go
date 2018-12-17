@@ -2,7 +2,7 @@ package models
 
 import "github.com/jinzhu/gorm"
 
-var db, err = ConnDB("core")
+var db = ConnDB("core")
 
 type SassComponentRelation struct {
 	UserId              string

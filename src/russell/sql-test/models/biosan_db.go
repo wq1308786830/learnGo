@@ -13,7 +13,7 @@ var dbConfString string
 /**
  * @param dbType 设置的数据库类型
  */
-func ConnDB(dbType string) (*gorm.DB, error) {
+func ConnDB(dbType string) (*gorm.DB) {
 
 	confPath := "src/russell/sql-test/config/env.yaml"
 	if len(os.Args) == 5 && os.Args[4] == "test" {
@@ -34,7 +34,7 @@ func ConnDB(dbType string) (*gorm.DB, error) {
 	}
 
 	db.SingularTable(true)
-	return db, err
+	return db
 }
 
 /**

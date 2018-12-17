@@ -1,21 +1,22 @@
 package utils
 
 import (
-	"bytes"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
+	"strings"
 )
 
 const SUCCESSCODE int = 10000
 
 const DBERRORCODE int = 99
 
-func HttpPost(url string, params []byte) ([]byte, error) {
-	resp, err := http.Post(url,
+func HttpPost(urlStr string, params url.Values) ([]byte) {
+	resp, err := http.Post(urlStr,
 		"application/x-www-form-urlencoded",
-		bytes.NewBuffer(params))
+		strings.NewReader(params.Encode()))
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -27,5 +28,5 @@ func HttpPost(url string, params []byte) ([]byte, error) {
 		log.Println(err)
 	}
 
-	return body, err
+	return body
 }
