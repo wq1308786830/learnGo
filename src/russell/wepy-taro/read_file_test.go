@@ -12,7 +12,7 @@ func TestGetFileContent(t *testing.T) {
 	cases := []struct {
 		in, want string
 	}{
-		{"/Users/russell/Projects/saas-2c-weichatApp/src/page/line/newInfoForm1.wpy", "dlrow ,olleH"},
+		{"/Users/russell/Desktop/wpysrc/page/line/newInfoForm1.wpy", "dlrow ,olleH"},
 		{"/Users/russell/GitHub/GoLang/learn/src/russell/stringutil/reverse.go", "界世 ,olleH"},
 	}
 
@@ -26,7 +26,7 @@ func TestGetFileContent(t *testing.T) {
 }
 
 func TestSplitWpyFile(t *testing.T) {
-	path := "/Users/russell/Projects/saas-2c-weichatApp/src/page/line/newInfoForm1.wpy"
+	path := "/Users/russell/Desktop/wpysrc/page/line/newInfoForm1.wpy"
 	contentByte := GetFileContent(path)
 	temp := SplitWpyFile(contentByte)
 	CreateFileByTemp(temp, path)

@@ -31,17 +31,18 @@ func SplitWpyFile(content []byte) ContentTemp {
 	styleReg := regexp.MustCompile(`(?ms)^(?-ms:<style.*>)(.*)(?-m:</style>)$`)
 	xmlReg := regexp.MustCompile(`(?ms)^(?-ms:<template.*>)(.*)(?-m:</template>)$`)
 	scriptReg := regexp.MustCompile(`(?ms)^(?-ms:<script.*>)(.*)(?-m:</script>)$`)
-	contentStr := string(content)
 
 	//fmt.Println(contentStr)
-	lessStr := styleReg.FindStringSubmatch(contentStr)[1]
-	xmlStr := xmlReg.FindStringSubmatch(contentStr)[1]
-	scriptStr := scriptReg.FindStringSubmatch(contentStr)[1]
+	lessStr := styleReg.FindSubmatch(content)[1]
+	xmlStr := xmlReg.FindSubmatch(content)[1]
+	scriptStr := scriptReg.FindSubmatch(content)[1]
+
+	xmlStrR := ReplaceBase(xmlStr)
 
 	contentTemp := ContentTemp{
-		LessStr:   []byte(lessStr),
-		XmlStr:    []byte(xmlStr),
-		ScriptStr: []byte(scriptStr),
+		LessStr:   lessStr,
+		XmlStr:    xmlStrR,
+		ScriptStr: scriptStr,
 	}
 
 	return contentTemp
