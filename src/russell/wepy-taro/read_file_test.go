@@ -5,6 +5,7 @@ package wepy_taro
 
 import (
 	"fmt"
+	"regexp"
 	"testing"
 )
 
@@ -30,4 +31,15 @@ func TestSplitWpyFile(t *testing.T) {
 	contentByte := GetFileContent(path)
 	temp := SplitWpyFile(contentByte)
 	CreateFileByTemp(temp, path)
+}
+
+func TestReg(t *testing.T) {
+	s := []byte(`:imgData.sync="consentData"`)
+	var dst []byte
+	fmt.Println(string(s))
+	regPropsReact := regexp.MustCompile(`(:?)([\w_]+)([.sync]?)(=")([\w_]+)(")`) // 匹配所有组件传值属性
+	template := []byte("|$1|$2|$3|$4|$5|$6|")
+	match := regPropsReact.FindSubmatchIndex(s)
+	fmt.Printf("%q", regPropsReact.Expand(dst, template, s, match))
+	fmt.Println(string(dst))
 }
