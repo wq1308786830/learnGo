@@ -100,13 +100,10 @@ func ReplaceBase(xmlContent []byte) []byte { // 匹配所有tag的class属性
 			}
 			return regWpyProps.ReplaceAll(s, result)
 		} else {
-			var dst []byte
 			fmt.Println(string(s))
-			regPropsReact := regexp.MustCompile(`(:?)([\w_]+)([.sync]?)(=")([\w_]+)(")`) // 匹配所有组件传值属性
-			template := []byte("Hello $1, Hello $2")
-			match := regPropsReact.FindSubmatchIndex(s)
-			fmt.Printf("%q", regPropsReact.Expand(dst, template, s, match))
-			fmt.Println(string(dst))
+			regPropsReact := regexp.MustCompile(`(?::?)([\w_]+)(?:[.sync]?)(?:=")([\w_]+)(?:")`) // 匹配所有组件传值属性
+			s = regPropsReact.ReplaceAll(s, []byte(`${1}={${2}}`))
+			fmt.Println(string(s))
 			return s
 		}
 	})
