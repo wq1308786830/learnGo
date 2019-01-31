@@ -6,7 +6,7 @@ import (
 	"regexp"
 )
 
-func ReplaceBase(xmlContent []byte) []byte { // 匹配所有tag的class属性
+func ReplaceBaseXml(xmlContent []byte) []byte { // 匹配所有tag的class属性
 	var regViewS = regexp.MustCompile(`<(\w)|</(\w)`)                        // 匹配所有tag前两位，分组匹配tag第一个字母
 	var regComment = regexp.MustCompile(` class="|<!--|-->|"{{|}}"|{{|}}`)   // 匹配所有xml注释以及 class="
 	var regProps = regexp.MustCompile(`(?U)([ :]?[.\w-_@]+[.sync]?)=(".+")`) // 匹配所有组件传值属性
@@ -84,15 +84,15 @@ func ReplaceBase(xmlContent []byte) []byte { // 匹配所有tag的class属性
 				if isEvent {
 					fmt.Println(string(result))
 					regEventFuncWithBrackets := regexp.MustCompile(`(=")([\w]+)(\()([0-9a-zA-Z-_"', ]+)(\)")`) // 匹配带参事件使用的方法
-					result = regEventFuncWithBrackets.ReplaceAll(result, []byte("={this.${2}.bind(this, ${4})}"))
+					result = regEventFuncWithBrackets.ReplaceAll(result, []byte("={this.$2.bind(this, $4)}"))
 
 					regEventFunc := regexp.MustCompile(`(=")([^(][\w]+)(")`) // 匹配事件使用的方法
-					result = regEventFunc.ReplaceAll(result, []byte("={this.${2}}"))
+					result = regEventFunc.ReplaceAll(result, []byte("={this.$2}"))
 					fmt.Println(string(result))
 				} else {
 					fmt.Println(string(result))
 					regPropsVal := regexp.MustCompile(`=("{{)(.*)(}}")`) // 匹配属性值
-					result = regPropsVal.ReplaceAll(result, []byte("={${2}}"))
+					result = regPropsVal.ReplaceAll(result, []byte("={$2}"))
 					fmt.Println(string(result))
 				}
 				//fmt.Println("isEvent", string(result))
@@ -101,12 +101,21 @@ func ReplaceBase(xmlContent []byte) []byte { // 匹配所有tag的class属性
 			return regWpyProps.ReplaceAll(s, result)
 		} else {
 			fmt.Println(string(s))
-			regPropsReact := regexp.MustCompile(`(?::?)([\w_]+)(?:[.sync]?)(?:=")([\w_]+)(?:")`) // 匹配所有组件传值属性
-			s = regPropsReact.ReplaceAll(s, []byte(`${1}={${2}}`))
+			regPropsReact := regexp.MustCompile(`(?::?)([\w_]+)(?:\.sync="|=")([\w_]+)"`) // 匹配所有组件传值属性
+			s = regPropsReact.ReplaceAll(s, []byte(`$1={$2}`))
 			fmt.Println(string(s))
 			return s
 		}
 	})
 
+	// 替换wx:if wx:else wx:elif
+	//regIfElse := regexp.MustCompile(`(<\w+)(?U: wx:if={ ?| wx:elif={ ?| wx:else)([ !&|.\w]+)(?U: ?})(.*)`) // 匹配所有条件渲染
+	//xmlContent = regIfElse.ReplaceAll(xmlContent, []byte(`{$2 && $1$3}`))
+
 	return xmlContent
+}
+
+func ReplaceStatement(xmlContent []byte) []byte {
+
+	return nil
 }

@@ -37,7 +37,7 @@ func SplitWpyFile(content []byte) ContentTemp {
 	xmlStr := xmlReg.FindSubmatch(content)[1]
 	scriptStr := scriptReg.FindSubmatch(content)[1]
 
-	xmlStrR := ReplaceBase(xmlStr)
+	xmlStrR := ReplaceBaseXml(xmlStr)
 
 	contentTemp := ContentTemp{
 		LessStr:   lessStr,

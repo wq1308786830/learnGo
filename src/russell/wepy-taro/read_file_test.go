@@ -34,12 +34,13 @@ func TestSplitWpyFile(t *testing.T) {
 }
 
 func TestReg(t *testing.T) {
-	s := []byte(`:imgData.sync="consentData"`)
 	var dst []byte
-	fmt.Println(string(s))
-	regPropsReact := regexp.MustCompile(`(:?)([\w_]+)([.sync]?)(=")([\w_]+)(")`) // 匹配所有组件传值属性
-	template := []byte("|$1|$2|$3|$4|$5|$6|")
-	match := regPropsReact.FindSubmatchIndex(s)
-	fmt.Printf("%q", regPropsReact.Expand(dst, template, s, match))
-	fmt.Println(string(dst))
+	templateStr := []byte(`$1|$2|$3|$4|$5|$6`)
+	xmlContent := GetFileContent("/Users/russell/Desktop/wpysrc/page/line/newInfoForm1.xml")
+	//fmt.Println(string(xmlContent))
+	regPropsReact := regexp.MustCompile(`(?ms)(<\w+)(?U: className=".*")(?U: wx:if={ ?| wx:elif={ ?| wx:else)([ !&|.\w]+)(?U: ?})(.*)`) // 匹配所有组件传值属性
+	match := regPropsReact.FindAllSubmatchIndex(xmlContent, -1)
+	for _, v := range match {
+		fmt.Printf("%q\n", regPropsReact.Expand(dst, templateStr, xmlContent, v))
+	}
 }
